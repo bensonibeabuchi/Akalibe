@@ -1,0 +1,1 @@
+web: gunicorn AKALIBE.wsgi
