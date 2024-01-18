@@ -1,6 +1,8 @@
 from django.db import models
 from django.urls import reverse
 import uuid
+from users.models import CustomUser
+from django.urls import reverse
 
 
 class Category(models.Model):
@@ -16,6 +18,10 @@ class Category(models.Model):
     class Meta:
         verbose_name = 'category'
         verbose_name_plural = ('Categories')
+
+    def get_url(self):
+            return reverse('products_by_category', args=[self.slug])
+
 
 
 class Product(models.Model):
@@ -78,9 +84,10 @@ class Cart(models.Model):
 
 
 class CartItem(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True, blank=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     variations = models.ManyToManyField(Variation, blank=True)
-    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, null=True, blank=True)
     quantity = models.PositiveIntegerField()
     is_active = models.BooleanField(default=True)
 
