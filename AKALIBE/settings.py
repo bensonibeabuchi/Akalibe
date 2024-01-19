@@ -117,11 +117,11 @@ AUTH_USER_MODEL = "users.CustomUser"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': "railway",
+        'NAME': config('USERNAME'),
         'USER': 'postgres',
-        'PASSWORD': config('RAILWAY_PASSWORD'),
-        'HOST': 'monorail.proxy.rlwy.net',
-        'PORT': '45961'
+        'PASSWORD': config('PASSWORD'),
+        'HOST': config('HOST'),
+        'PORT': config('PORT'),
     }
 }
 
