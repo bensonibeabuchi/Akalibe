@@ -120,7 +120,7 @@ DATABASES = {
         'NAME': config('USERNAME'),
         'USER': 'postgres',
         'PASSWORD': config('PASSWORD'),
-        'HOST': config('HOST'),
+        'HOST': 'monorail.proxy.rlwy.net',
         'PORT': config('PORT'),
     }
 }
