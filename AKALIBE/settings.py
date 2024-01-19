@@ -16,7 +16,7 @@ from django.contrib.messages import constants as messages
 import dj_database_url
 from decouple import config
 
-DATABASE_URL = 'postgresql://postgres:*Gde-4a*5bb5dD1-F3Cd*aEFfa45CA4*@monorail.proxy.rlwy.net:46937/railway'
+DATABASE_URL = 'postgresql://postgres:E*deC1a3fEDcece*cea6-dG6F-4BADDb@monorail.proxy.rlwy.net:45961/railway'
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -33,7 +33,7 @@ SECRET_KEY = config('SECRET_KEY')
 DEBUG = True
 
 
-ALLOWED_HOSTS = ['akalibe-72d1c5f4fac7.herokuapp.com', '127.0.0.1']
+ALLOWED_HOSTS = ['.vercel.app', '127.0.0.1', 'localhost', '.now.sh']
 
 
 # Application definition
@@ -102,14 +102,26 @@ AUTH_USER_MODEL = "users.CustomUser"
 #     'default': dj_database_url.config(default=DATABASE_URL, conn_max_age=1800),
 # }
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': config('POSTGRESS_USERNAME'),
+#         'USER': 'postgres',
+#         'PASSWORD': config('POSTGRESS_PASSWORD'),
+#         'HOST': 'localhost',
+#         'PORT': '5432'
+#     }
+# }
+
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': config('POSTGRESS_USERNAME'),
+        'NAME': "railway",
         'USER': 'postgres',
-        'PASSWORD': config('POSTGRESS_PASSWORD'),
-        'HOST': 'localhost',
-        'PORT': '5432'
+        'PASSWORD': 'E*deC1a3fEDcece*cea6-dG6F-4BADDb',
+        'HOST': 'monorail.proxy.rlwy.net',
+        'PORT': '45961'
     }
 }
 
