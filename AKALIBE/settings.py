@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'django_filters',
     'accounts.apps.AccountsConfig',
+    'orders.apps.OrdersConfig',
 ]
 
 MIDDLEWARE = [
@@ -88,19 +89,11 @@ WSGI_APPLICATION = 'AKALIBE.wsgi.application'
 AUTH_USER_MODEL = "users.CustomUser"
 
 
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
 # DATABASES = {
 #     'default': dj_database_url.config(default=DATABASE_URL, conn_max_age=1800),
 # }
+
+# Local Database, use when you want to edit the code. it is faster
 
 # DATABASES = {
 #     'default': {
@@ -113,6 +106,7 @@ AUTH_USER_MODEL = "users.CustomUser"
 #     }
 # }
 
+# Railway Database, use when you want to push to the web
 
 DATABASES = {
     'default': {
@@ -195,3 +189,7 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+
+
+PAYPAL_CLIENT_ID = config('PAYPAL_CLIENT_ID')
+PAYPAL_SECRET = config('PAYPAL_SECRET')

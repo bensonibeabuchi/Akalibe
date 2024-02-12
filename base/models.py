@@ -3,6 +3,7 @@ from django.urls import reverse
 import uuid
 from users.models import CustomUser
 from django.urls import reverse
+from django.db.models import Avg
 
 
 class Category(models.Model):
@@ -25,6 +26,7 @@ class Category(models.Model):
 
 
 class Product(models.Model):
+    
     uuid = models.UUIDField(
         primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     product_name = models.CharField(
@@ -47,6 +49,13 @@ class Product(models.Model):
 
     def get_url(self):
         return reverse('product-detail', args=[self.category.slug, self.slug])
+    
+    def averageReview(self):
+        reviews = ReviewRating.objects.filter(product=self, status=True).aggregate(average=Avg('rating'))
+        avg = 0
+        if reviews['average'] is not None:
+            avg = float(reviews['average'])
+        return avg
 
     class Meta:
         ordering = ('product_name',)
@@ -102,3 +111,18 @@ class CartItem(models.Model):
 
     class Meta:
         ordering = ['product__product_name']
+
+
+class ReviewRating(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    subject = models.CharField(max_length=255, blank=True)
+    review = models.TextField(max_length=500, blank=True)
+    rating = models.FloatField(blank=True)
+    ip = models.CharField(max_length=255, blank=True)
+    status = models.BooleanField(default=True)
+    created_date = models.DateTimeField(auto_now_add=True)
+    updated_date = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.subject

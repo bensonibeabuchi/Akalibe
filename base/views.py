@@ -7,6 +7,8 @@ from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
 from django.contrib import messages
+from users.forms import *
+from orders.models import *
 
 # Create your views here.
 
@@ -73,6 +75,7 @@ def search(request):
 
 
 def product_detail(request, category_slug, product_slug,):
+    orderproduct = None
     category = get_object_or_404(
         Category, slug=category_slug)  # Get the Category
     try:
@@ -83,8 +86,14 @@ def product_detail(request, category_slug, product_slug,):
 
     except Exception as e:
         raise e
+    if request.user.is_authenticated:
+        try:
+            orderproduct = OrderProduct.objects.filter(user=request.user, product_id=single_product.uuid).exists() # noqa
+        except OrderProduct.DoesNotExist:
+            orderproduct = None
 
-    # Check the stock status and set a flag for out-of-stock
+    reviews = ReviewRating.objects.filter(product_id=single_product.uuid, status=True).order_by('-updated_date')
+  
 
     context = {
         "single_product": single_product,
@@ -92,6 +101,8 @@ def product_detail(request, category_slug, product_slug,):
         "is_out_of_stock": is_out_of_stock,
         "in_cart": in_cart,
         "variation": variation,
+        "orderproduct": orderproduct,
+        "reviews": reviews
     }
 
     return render(request, "base/product-detail.html", context)
@@ -305,7 +316,7 @@ def dashboard(request):
 
 
 @login_required(login_url='login')
-def place_order(request):
+def checkout(request):
     total = 0
     quantity = 0
     cart_items = None
@@ -336,7 +347,51 @@ def place_order(request):
         "tax": tax,
         "grand_total": grand_total,
     }
-    return render(request, 'base/place-order.html', context)
+    return render(request, 'base/checkout.html', context)
 
 
+
+def submit_review(request, product_uuid):
+    url = request.META.get('HTTP_REFERER')
+    if request.method == 'POST':
+        try:
+            # Check if the user has already submitted a review for this product
+            reviews = ReviewRating.objects.get(user__id=request.user.id, product__uuid=product_uuid)
+            form = ReviewForm(request.POST, instance=reviews)
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'Thank you! Your review has been updated successfully')
+            else:
+                messages.error(request, 'Error updating review.')
+            return redirect(url)
+
+        except ReviewRating.DoesNotExist:
+            # If the user has not submitted a review for this product, create a new one
+            form = ReviewForm(request.POST)
+            if form.is_valid():
+                data = form.save(commit=False)
+                data.user = request.user  # Set the user field
+               
+                try:
+                    product = Product.objects.get(uuid=product_uuid)
+                    data.product = product #set the product field
+                    data.ip = request.META.get('REMOTE_ADDR')
+                    data.save()
+                    messages.success(request, 'Thank you! Your review has been submitted successfully')
+                except Product.DoesNotExist:
+                    messages.error(request, 'Error submitting review. Product not found.')
+            else:
+                messages.error(request, 'Error submitting review. Please check the form.')
+            return redirect(url)
+
+                # data = ReviewRating()
+                # data.subject = form.cleaned_data['subject']
+                # data.rating = form.cleaned_data['rating']
+                # data.review = form.cleaned_data['review']
+                # data.ip = request.META.get('REMOTE_ADDR')
+                # data.product_uuid = product_uuid
+                # data.user_id = request.user.id
+                # data.save()
+                # messages.success(request, 'Thank you! Your review has been submitted successfully')
+                # return redirect(url)
 

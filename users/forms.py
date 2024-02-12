@@ -2,6 +2,8 @@ from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from .models import CustomUser
 from django import forms
 from .models import *
+from orders.models import Order
+from base.models import *
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -34,3 +36,15 @@ class CustomUserChangeForm(UserChangeForm):
     class Meta:
         model = CustomUser
         fields = ("email", "username", "first_name", "last_name",)
+
+
+class OrderForm(forms.ModelForm):
+    class Meta:
+        model = Order
+        fields = ('first_name', 'last_name', 'email', 'phone', 'address_line_1', 'address_line_2', 'country', 'state', 'city', 'order_note')
+
+
+class ReviewForm(forms.ModelForm):
+    class Meta:
+        model = ReviewRating
+        fields = ['subject', 'review', 'rating']
