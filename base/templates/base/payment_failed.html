@@ -1,12 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Payment Failed</title>
-</head>
-<body>
-    <h1>Payment Failed</h1>
-    <p>Your payment was not completed. Please try again.</p>
-</body>
-</html>
+{% extends 'base/base.html' %} {% load static %} {% block content %}
+<section class="section-name padding-y-sm">
+  <div class="container">
+    <header class="section-heading">
+      <h3 class="section-title align-items-center justify-content-center d-flex">Payment Failed</h3>
+      <p>Your payment was not completed. Please try again.</p>
+    </header>
+    <div class="row">
+    </div>
+  </div>
+</section>
+
+{% endblock %}

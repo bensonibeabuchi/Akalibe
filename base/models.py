@@ -27,20 +27,15 @@ class Category(models.Model):
 
 class Product(models.Model):
     
-    uuid = models.UUIDField(
-        primary_key=True, default=uuid.uuid4, editable=False, unique=True)
-    product_name = models.CharField(
-        max_length=255, null=True, blank=True, unique=True)
+    uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
+    product_name = models.CharField(max_length=255, null=True, blank=True, unique=True)
     slug = models.SlugField(max_length=255, null=True, blank=True, unique=True)
     description = models.TextField(null=True, blank=True)
-    price = models.DecimalField(
-        max_digits=10, decimal_places=2, null=True, blank=True)
-    product_image = models.ImageField(
-        upload_to='photos/products', null=True, blank=True)
+    price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    product_image = models.ImageField(upload_to='photos/products', null=True, blank=True)
     stock = models.IntegerField(null=True, blank=True)
     is_available = models.BooleanField(default=True)
-    category = models.ForeignKey(
-        Category, on_delete=models.CASCADE, null=True, blank=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now_add=True)
 
@@ -56,6 +51,25 @@ class Product(models.Model):
         if reviews['average'] is not None:
             avg = float(reviews['average'])
         return avg
+    
+    def save(self, *args, **kwargs):
+        # Prevent stock from going below zero
+        if self.stock < 0:
+            self.stock = 0
+        
+        # Check if the product's stock was zero and now it's restocked
+        if self.stock > 0 and not self.is_available:
+            # If the stock is greater than zero and is_available is False,
+            # set is_available to True
+            self.is_available = True
+        
+        # Check if the product's stock is zero
+        if self.stock == 0:
+            # If stock is zero, set is_available to False
+            self.is_available = False
+        
+        # Call the original save method to save the changes
+        super().save(*args, **kwargs)
 
     class Meta:
         ordering = ('product_name',)

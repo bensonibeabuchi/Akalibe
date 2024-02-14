@@ -9,4 +9,5 @@ urlpatterns = [
     path('create_payment/', create_payment, name='create_payment'),
     path('execute_payment/', execute_payment, name='execute_payment'),
     path('payment_failed/', payment_failed, name='payment_failed'),
+    # path('payment_success/', payment_success, name='payment_success'),
 ]

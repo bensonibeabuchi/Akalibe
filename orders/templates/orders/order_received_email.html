@@ -1,0 +1,12 @@
+{% load static %}
+
+{% autoescape off %}
+Hi {{ user.username | capfirst }}, 
+
+Your order with Order number: {{ order.order_number }} has been received and will be processed shortly.
+
+
+
+Best regards,
+Akalibe
+{% endautoescape %}

@@ -135,7 +135,7 @@
             <p>You must be logged in to post a review <span> <a href="{% url 'login' %}">Log in Now</a> </span> </p>
             {% endif %}
           </div>
-          {% for message in messages %}
+          <!-- {% for message in messages %}
           <div id="message" class="contianer">
             <div {% if message.tags %} class="alert alert-{{message.tags}}" {% endif %} role="alert">
               <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>
@@ -143,7 +143,7 @@
             </div>
           </div>
      
-          {% endfor %}
+          {% endfor %} -->
        
         </form>
         <header class="section-heading">
