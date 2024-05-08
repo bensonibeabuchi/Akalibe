@@ -76,29 +76,29 @@ AUTH_USER_MODEL = "users.CustomUser"
 
 # Local Database, use when you want to edit the code. it is faster
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': config('POSTGRESS_USERNAME'),
-        'USER': 'postgres',
-        'PASSWORD': config('POSTGRESS_PASSWORD'),
-        'HOST': 'localhost',
-        'PORT': '5432'
-    }
-}
-
-# Railway Database, use when you want to push to the web
-
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': config('USERNAME'),
+#         'NAME': config('POSTGRESS_USERNAME'),
 #         'USER': 'postgres',
-#         'PASSWORD': config('PASSWORD'),
-#         'HOST': 'monorail.proxy.rlwy.net',
-#         'PORT': config('PORT'),
+#         'PASSWORD': config('POSTGRESS_PASSWORD'),
+#         'HOST': 'localhost',
+#         'PORT': '5432'
 #     }
 # }
+
+# Railway Database, use when you want to push to the web
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'PASSWORD': config('PASSWORD'),
+        'HOST': 'roundhouse.proxy.rlwy.net',
+        'PORT': '50728',
+    }
+}
 
 
 # Password validation
