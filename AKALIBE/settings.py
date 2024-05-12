@@ -92,11 +92,11 @@ AUTH_USER_MODEL = "users.CustomUser"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'postgres',
+        'NAME': 'railway',
         'USER': 'postgres',
         'PASSWORD': config('PASSWORD'),
-        'HOST': 'roundhouse.proxy.rlwy.net',
-        'PORT': '50728',
+        'HOST': config('HOST'),
+        'PORT': config('PORT'),
     }
 }
 
