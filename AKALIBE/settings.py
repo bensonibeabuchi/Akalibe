@@ -18,7 +18,7 @@ SECRET_KEY = config('SECRET_KEY')
 DEBUG = True
 
 
-ALLOWED_HOSTS = ['.vercel.app', '127.0.0.1', 'localhost', '.now.sh', 'akalibe-webapp.up.railway.app', '*']
+ALLOWED_HOSTS = ['.vercel.app', '127.0.0.1', 'localhost', '.now.sh', 'akalibe.up.railway.app', '*']
 
 
 # Application definition
