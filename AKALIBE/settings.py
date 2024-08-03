@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'django_filters',
     'accounts.apps.AccountsConfig',
     'orders.apps.OrdersConfig',
+    'whitenoise.runserver_nostatic',
 ]
 
 MIDDLEWARE = [
